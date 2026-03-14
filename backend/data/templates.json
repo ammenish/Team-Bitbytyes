@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "cat": "Category A",
+        "name": "Large Project Gist Template",
+        "secs": [
+            "Project Overview",
+            "Environmental Impact Summary",
+            "Committee Observations",
+            "Recommendations"
+        ],
+        "upd": "2026-03-14"
+    },
+    {
+        "id": 2,
+        "cat": "Category B1",
+        "name": "Medium Project Template",
+        "secs": [
+            "Project Overview",
+            "Impact Assessment",
+            "Recommendations"
+        ],
+        "upd": "2025-05-15"
+    },
+    {
+        "id": 3,
+        "cat": "Category B2",
+        "name": "Small Project Template",
+        "secs": [
+            "Project Summary",
+            "Clearance Recommendation"
+        ],
+        "upd": "2025-05-10"
+    }
+]

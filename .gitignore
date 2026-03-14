@@ -1,0 +1,14 @@
+node_modules/
+.env
+dist/
+build/
+.vscode/
+
+# Backend
+backend/.env
+backend/__pycache__/
+backend/instance/
+backend/err.log
+backend/error.txt
+backend/data/*.db
+*.pyc
