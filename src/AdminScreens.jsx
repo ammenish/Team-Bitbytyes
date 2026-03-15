@@ -3,7 +3,6 @@ import { apiListUsers, apiUpdateUser, apiGetChecklists, apiUpdateChecklist, apiG
 import Ic from './Ic.jsx';
 import { CATEGORIES, SECTORS } from './data.js';
 import { Badge, StatCard } from './helpers.jsx';
-import { Map, Factory, Check, AlertTriangle } from 'lucide-react';
 
 export const AdminHome = ({ apps, notify }) => {
     const s = (st) => apps.filter(a => a.status === st).length;
@@ -484,7 +483,7 @@ export const HeatmapDash = ({ apps }) => {
             {/* Real Interactive Map */}
             <div className="card" style={{ padding: 0, marginBottom: 24, overflow: "hidden", borderRadius: 14 }}>
                 <div style={{ padding: "16px 20px", borderBottom: "1px solid #e2e8f0" }}>
-                    <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0a2463", margin: 0, display: "flex", alignItems: "center", gap: 6 }}><Map size={18} color="#2563eb" /> Chhattisgarh District Risk Map</h3>
+                    <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0a2463", margin: 0 }}>🗺️ Chhattisgarh District Risk Map</h3>
                     <p style={{ fontSize: 12, color: "#64748b", margin: "4px 0 0" }}>Interactive map — click circles for project details. Larger circles = more projects.</p>
                 </div>
                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -513,7 +512,7 @@ export const HeatmapDash = ({ apps }) => {
 
             {/* Industrial Concentration Table */}
             <div className="card" style={{ padding: 24 }}>
-                <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0a2463", marginBottom: 16, display: "flex", alignItems: "center", gap: 6 }}><Factory size={18} color="#d97706" /> Industrial Concentration Heat Map</h3>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0a2463", marginBottom: 16 }}>🏭 Industrial Concentration Heat Map</h3>
                 <p style={{ fontSize: 13, color: "#64748b", marginBottom: 20 }}>Project types distributed across districts.</p>
                 
                 <div style={{ overflowX: "auto" }}>

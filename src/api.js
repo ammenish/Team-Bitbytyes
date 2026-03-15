@@ -337,3 +337,40 @@ export async function apiSlaEscalate() {
     return await res.json();
 }
 
+// ── Razorpay Payments ────────────────────────────────────────────────────────
+export async function apiCreatePaymentOrder(appDbId) {
+    const res = await apiFetch(`/payments/create-order`, {
+        method: "POST",
+        body: JSON.stringify({ app_db_id: appDbId }),
+    });
+    if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to create payment order");
+    }
+    return await res.json();
+}
+
+// Verify Cashfree Payment
+export const apiVerifyPayment = async (data) => {
+    const res = await fetch(`${API_URL}/payments/verify`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Payment verification failed");
+    }
+    return res.json();
+};
+
+export function getQrCodeUrl(appDbId) {
+    return `${BASE}/payments/qr/${appDbId}`;
+}
+
+// Get Payment Gateway Config (Cashfree App ID)
+export const apiGetPaymentConfig = async () => {
+    const res = await fetch(`${API_URL}/payments/config`);
+    if (!res.ok) throw new Error("Failed loading payment config");
+    return res.json(); // { app_id, configured }
+};

@@ -2,7 +2,6 @@ import { useState } from "react";
 import Ic from './Ic.jsx';
 import { SECTORS, CATEGORIES } from './data.js';
 import { Badge, StatCard, WorkflowBar, QRCode } from './helpers.jsx';
-import { AlertTriangle, Check, FileText } from 'lucide-react';
 
 export const PPHome = ({ user, apps }) => {
     const mine = apps.filter(a => a.proponent === (user.company || user.name));
@@ -18,10 +17,10 @@ export const PPHome = ({ user, apps }) => {
             {mine.length ? <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>{mine.map(a => <div key={a.id} className="card" style={{ padding: 20 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 14 }}>
                     <div><div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}><span style={{ fontFamily: "monospace", fontWeight: 700, color: "#1e56c2", fontSize: 12 }}>{a.id}</span><Badge t={a.status} /></div><div style={{ fontWeight: 700, color: "#0a2463", fontSize: 15 }}>{a.project}</div><div style={{ color: "#64748b", fontSize: 12 }}>{a.sector} · {a.category} · Filed {a.date}</div></div>
-                    <div style={{ textAlign: "right" }}><div style={{ fontWeight: 700, color: a.feesPaid ? "#059669" : "#dc2626", fontSize: 14 }}>₹{a.fees.toLocaleString()}</div><div style={{ fontSize: 11, color: "#64748b", display: "flex", gap: 4, alignItems: "center", justifyContent: "flex-end" }}>{a.feesPaid ? <>Fees Paid <Check size={12}/></> : <>Payment Pending <AlertTriangle size={12}/></>}</div></div>
+                    <div style={{ textAlign: "right" }}><div style={{ fontWeight: 700, color: a.feesPaid ? "#059669" : "#dc2626", fontSize: 14 }}>₹{a.fees.toLocaleString()}</div><div style={{ fontSize: 11, color: "#64748b" }}>{a.feesPaid ? "Fees Paid ✓" : "Payment Pending ⚠"}</div></div>
                 </div>
                 <WorkflowBar status={a.status} />
-                {a.status === "EDS Issued" && <div style={{ marginTop: 12, padding: "12px 14px", background: "#fef2f2", borderRadius: 10, border: "1px solid #fecaca" }}><div style={{ fontWeight: 700, color: "#dc2626", fontSize: 13, marginBottom: 5, display: "flex", alignItems: "center", gap: 6 }}><AlertTriangle size={16} /> Essential Documents Sought (EDS)</div><p style={{ fontSize: 13, color: "#7f1d1d" }}>{a.edsRemarks}</p><button className="btn btn-primary btn-sm" style={{ marginTop: 10 }}>Upload Corrected Documents</button></div>}
+                {a.status === "EDS Issued" && <div style={{ marginTop: 12, padding: "12px 14px", background: "#fef2f2", borderRadius: 10, border: "1px solid #fecaca" }}><div style={{ fontWeight: 700, color: "#dc2626", fontSize: 13, marginBottom: 5 }}>⚠ Essential Documents Sought (EDS)</div><p style={{ fontSize: 13, color: "#7f1d1d" }}>{a.edsRemarks}</p><button className="btn btn-primary btn-sm" style={{ marginTop: 10 }}>Upload Corrected Documents</button></div>}
             </div>)}</div> : <div className="card" style={{ padding: 40, textAlign: "center", color: "#94a3b8" }}><Ic n="file" s={40} c="#dce3ef" /><div style={{ fontWeight: 600, marginTop: 10 }}>No applications filed yet</div><div style={{ fontSize: 13, marginTop: 4 }}>Click "New Application" to get started</div></div>}
         </div>
     );
@@ -82,7 +81,7 @@ export const NewApp = ({ user, onAdd, notify }) => {
                                 style={{ border: "2px dashed #dce3ef", borderRadius: 12, padding: "24px 20px", textAlign: "center", cursor: "pointer", background: "#fafbfc", transition: "all 0.2s" }}
                             >
                                 <input id="pdf-upload-input" type="file" accept=".pdf" multiple style={{ display: "none" }} onChange={e => { const files = Array.from(e.target.files); if (files.length) setF(p => ({ ...p, pdfFiles: [...p.pdfFiles, ...files].slice(0, 5) })); e.target.value = ''; }} />
-                                <div style={{ marginBottom: 8, display: "flex", justifyContent: "center" }}><FileText size={32} color="#94a3b8" /></div>
+                                <div style={{ fontSize: 32, marginBottom: 8 }}>📄</div>
                                 <div style={{ fontSize: 13, fontWeight: 600, color: "#475569", marginBottom: 4 }}>Drop PDF files here or <span style={{ color: "#1e56c2", textDecoration: "underline" }}>browse</span></div>
                                 <div style={{ fontSize: 11, color: "#94a3b8" }}>Supports: EIA Reports, DPRs, NOCs, Site Plans, Feasibility Reports</div>
                             </div>
@@ -112,7 +111,7 @@ export const NewApp = ({ user, onAdd, notify }) => {
                             {f.docs.includes(doc) && <span style={{ marginLeft: "auto", fontSize: 11, color: "#059669", fontWeight: 600 }}>✓ Attached</span>}
                         </div>)}
                     </div>
-                    <div style={{ marginTop: 14, padding: "9px 13px", background: "#fffbeb", borderRadius: 8, border: "1px solid #fde68a", fontSize: 12, color: "#92400e", display: "flex", alignItems: "center", gap: 6 }}><AlertTriangle size={14} /> In production, actual files are uploaded. Ensure documents are current and notarized where required.</div>
+                    <div style={{ marginTop: 14, padding: "9px 13px", background: "#fffbeb", borderRadius: 8, border: "1px solid #fde68a", fontSize: 12, color: "#92400e" }}>⚠ In production, actual files are uploaded. Ensure documents are current and notarized where required.</div>
                 </div>}
                 {step === 4 && <div className="slide-up">
                     <h3 style={{ fontFamily: "Outfit,sans-serif", fontWeight: 700, color: "#0a2463", marginBottom: 18 }}>Step 4: Fee Payment</h3>
@@ -138,8 +137,8 @@ export const NewApp = ({ user, onAdd, notify }) => {
                             {f.pm === "qr" && <div style={{ textAlign: "center" }}>
                                 <div style={{ fontSize: 13, fontWeight: 600, color: "#64748b", marginBottom: 10 }}>Scan to Pay ₹{fee.toLocaleString()}</div>
                                 <div style={{ background: "#fff", borderRadius: 14, padding: 14, border: "2px solid #dce3ef", display: "inline-block" }}><QRCode /></div>
-                                <div style={{ marginTop: 10, fontSize: 11, color: "#64748b" }}>parivesh.moef@sbi · UPI</div>
-                                {!paid && <button className="btn btn-success" style={{ marginTop: 12 }} onClick={pay}>Simulate Payment Confirmed</button>}
+                                <div style={{ marginTop: 10, fontSize: 11, color: "#64748b" }}>parivesh@cashfree · UPI</div>
+                                {!paid && <button className="btn" style={{ marginTop: 12, background: "#552288", color: "#fff", border: "none" }} onClick={pay}>Simulate Cashfree Payment</button>}
                             </div>}
                         </div>
                     </div>
@@ -147,7 +146,7 @@ export const NewApp = ({ user, onAdd, notify }) => {
                 {step === 5 && <div className="slide-up">
                     <h3 style={{ fontFamily: "Outfit,sans-serif", fontWeight: 700, color: "#0a2463", marginBottom: 18 }}>Step 5: Review & Submit</h3>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 18 }}>
-                        {[["Category", f.cat], ["Sector", f.sector], ["Project", f.name], ["Location", f.loc], ["Area", f.area + " ha"], ["Fee", <span style={{display: "flex", alignItems: "center", gap: 4}}>₹{fee.toLocaleString()} {paid ? <>(Paid <Check size={12}/>)</> : "(Unpaid)"}</span>]].map(([k, v]) => <div key={k} style={{ padding: "10px 13px", background: "#f8fafc", borderRadius: 9, border: "1px solid #dce3ef" }}><div style={{ fontSize: 11, fontWeight: 600, color: "#64748b", textTransform: "uppercase", marginBottom: 2 }}>{k}</div><div style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{v || "—"}</div></div>)}
+                        {[["Category", f.cat], ["Sector", f.sector], ["Project", f.name], ["Location", f.loc], ["Area", f.area + " ha"], ["Fee", `₹${fee.toLocaleString()} ${paid ? "(Paid ✓)" : "(Unpaid)"}`]].map(([k, v]) => <div key={k} style={{ padding: "10px 13px", background: "#f8fafc", borderRadius: 9, border: "1px solid #dce3ef" }}><div style={{ fontSize: 11, fontWeight: 600, color: "#64748b", textTransform: "uppercase", marginBottom: 2 }}>{k}</div><div style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{v || "—"}</div></div>)}
                     </div>
                     <div style={{ marginBottom: 16 }}><div style={{ fontSize: 11, fontWeight: 600, color: "#64748b", textTransform: "uppercase", marginBottom: 7 }}>Attached Documents ({f.docs.length})</div><div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>{f.docs.map(d => <span key={d} className="badge" style={{ background: "#eff6ff", color: "#2563eb" }}><Ic n="doc" s={10} />  {d}</span>)}{!f.docs.length && <span style={{ color: "#94a3b8", fontSize: 13 }}>None attached</span>}</div></div>
                     <div style={{ padding: "12px 14px", background: "#fffbeb", borderRadius: 9, border: "1px solid #fde68a", fontSize: 13, color: "#92400e" }}>By submitting, you confirm all information is accurate. False declarations are punishable under EPA 1986.</div>

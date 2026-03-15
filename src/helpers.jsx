@@ -1,5 +1,4 @@
 import Ic from './Ic.jsx';
-import { AlertTriangle } from 'lucide-react';
 
 export const statusClass = { "Draft": "#f1f5f9:#64748b", "Submitted": "#eff6ff:#2563eb", "Under Scrutiny": "#fffbeb:#d97706", "EDS Issued": "#fef2f2:#dc2626", "Referred for Meeting": "#f0fdf4:#16a34a", "MoM Generated": "#faf5ff:#7c3aed", "Finalized": "#ecfdf5:#059669" };
 
@@ -40,7 +39,7 @@ export const WorkflowBar = ({ status }) => {
                     </div>
                 ))}
             </div>
-            {status === "EDS Issued" && <div style={{ marginTop: 10, padding: "8px 12px", background: "#fef2f2", borderRadius: 8, border: "1px solid #fecaca", fontSize: 12, color: "#dc2626", fontWeight: 500, display: "flex", gap: 6, alignItems: "center" }}><AlertTriangle size={14} /> Application returned to Proponent – EDS issued pending resolution</div>}
+            {status === "EDS Issued" && <div style={{ marginTop: 10, padding: "8px 12px", background: "#fef2f2", borderRadius: 8, border: "1px solid #fecaca", fontSize: 12, color: "#dc2626", fontWeight: 500 }}>⚠ Application returned to Proponent – EDS issued pending resolution</div>}
         </div>
     );
 };

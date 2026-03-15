@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Ic from './Ic.jsx';
 import { Badge, StatCard } from './helpers.jsx';
 import { apiDownloadDocument, apiAiGenerateMom } from './api.js';
-import { Mic, Circle, Bot } from 'lucide-react';
 
 export const MoMHome = ({ apps }) => (
     <div className="fade-in">
@@ -129,10 +128,10 @@ export const MoMEd = ({ apps, upd, notify }) => {
                             <div style={{ display: "flex", gap: 9, marginTop: 12, flexWrap: "wrap" }}>
                                 <button className="btn btn-primary" onClick={savGist}><Ic n="ok" s={14} />Save Gist</button>
                                 <button onClick={toggleSpeech} style={{ padding: "9px 16px", borderRadius: 9, border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 600, fontSize: 13, display: "flex", alignItems: "center", gap: 6, background: listening ? "#ef4444" : "#f1f5f9", color: listening ? "#fff" : "#334155", animation: listening ? "pulse 1.5s infinite" : "none" }}>
-                                    {listening ? <><Circle size={14}/> Stop Dictation</> : <><Mic size={14}/> Voice Dictate</>}
+                                    {listening ? "🔴 Stop Dictation" : "🎤 Voice Dictate"}
                                 </button>
                                 {!app.mom && <button className="btn" style={{ background: "linear-gradient(135deg, #7c3aed, #a855f7)", color: "#fff", border: "none" }} onClick={toMoM} disabled={momLoading}>
-                                    {momLoading ? <><span style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />AI Generating MoM…</> : <><Bot size={16}/> Convert to MoM (AI)</>}
+                                    {momLoading ? <><span style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />AI Generating MoM…</> : <>🤖 Convert to MoM (AI)</>}
                                 </button>}
                                 <button className="btn btn-secondary" onClick={() => apiDownloadDocument(app.dbId, 'gist', 'docx').catch(e => console.error(e))}><Ic n="dl" s={12} />Download</button>
                             </div>
@@ -143,7 +142,7 @@ export const MoMEd = ({ apps, upd, notify }) => {
                             <div style={{ display: "flex", gap: 9, marginTop: 12, flexWrap: "wrap" }}>
                                 <button className="btn btn-primary" onClick={() => { upd(sel, { mom }); notify("MoM saved"); }}><Ic n="ok" s={14} />Save MoM</button>
                                 <button onClick={toggleSpeech} style={{ padding: "9px 16px", borderRadius: 9, border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 600, fontSize: 13, display: "flex", alignItems: "center", gap: 6, background: listening ? "#ef4444" : "#f1f5f9", color: listening ? "#fff" : "#334155", animation: listening ? "pulse 1.5s infinite" : "none" }}>
-                                    {listening ? <><Circle size={14}/> Stop Dictation</> : <><Mic size={14}/> Voice Dictate</>}
+                                    {listening ? "🔴 Stop Dictation" : "🎤 Voice Dictate"}
                                 </button>
                                 <button style={{ background: "#0a2463", color: "#fff", border: "none", padding: "9px 16px", borderRadius: 9, cursor: "pointer", fontFamily: "inherit", fontWeight: 600, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }} onClick={finalize}><Ic n="lock" s={13} c="#fff" />Finalize & Lock MoM</button>
                             </div>

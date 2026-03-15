@@ -47,16 +47,16 @@ const landingCSS = `
   
   /* ── Dropdown Navbar logic ── */
   .login-dropdown-wrapper { position: relative; display: inline-block; padding: 10px 0; }
-  .login-dropdown { display: none; position: absolute; top: calc(100% - 5px); left: 50%; transform: translateX(-50%); background: #fff; border-radius: 16px; box-shadow: 0 6px 30px rgba(0,0,0,0.12); padding: 10px 0; z-index: 200; min-width: 180px; animation: slideUpFade 0.2s ease forwards; }
-  .login-dropdown::before { content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 14px; height: 14px; background: #fff; box-shadow: -2px -2px 4px rgba(0,0,0,0.02); }
+  .login-dropdown { display: none; position: absolute; top: calc(100% - 5px); right: 0; background: #fff; border-radius: 16px; box-shadow: 0 6px 30px rgba(0,0,0,0.12); padding: 10px 0; z-index: 200; min-width: 200px; animation: slideUpFade 0.2s ease forwards; }
+  .login-dropdown::before { content: ''; position: absolute; top: -6px; right: 24px; transform: rotate(45deg); width: 14px; height: 14px; background: #fff; box-shadow: -2px -2px 4px rgba(0,0,0,0.02); }
   .login-dropdown-wrapper:hover .login-dropdown { display: block; }
   .dropdown-item { position: relative; padding: 12px 24px; cursor: pointer; color: #064e2b; font-weight: 600; font-size: 15px; transition: all 0.2s; display: flex; align-items: center; gap: 12px; z-index: 2; background: transparent; }
   .dropdown-item:hover { background: rgba(5, 196, 107, 0.08); color: #059669; }
 
   /* ── Nav Dropdown (Dashboard) ── */
   .nav-dropdown-wrapper { position: relative; display: inline-block; }
-  .nav-dropdown { display: none; position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #fff; border-radius: 14px; box-shadow: 0 8px 36px rgba(0,0,0,0.14); padding: 8px 0; z-index: 300; min-width: 210px; animation: slideUpFade 0.2s ease forwards; }
-  .nav-dropdown::before { content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 12px; height: 12px; background: #fff; box-shadow: -2px -2px 4px rgba(0,0,0,0.02); }
+  .nav-dropdown { display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #fff; border-radius: 14px; box-shadow: 0 8px 36px rgba(0,0,0,0.14); padding: 8px 0; z-index: 300; min-width: 220px; animation: slideUpFade 0.2s ease forwards; }
+  .nav-dropdown::before { content: ''; position: absolute; top: -6px; left: 24px; transform: rotate(45deg); width: 12px; height: 12px; background: #fff; box-shadow: -2px -2px 4px rgba(0,0,0,0.02); }
   .nav-dropdown-wrapper:hover .nav-dropdown { display: block; }
   .nav-dd-item { padding: 11px 20px; cursor: pointer; color: #334155; font-weight: 600; font-size: 13px; transition: all 0.15s; display: flex; align-items: center; gap: 8px; }
   .nav-dd-item:hover { background: linear-gradient(90deg, rgba(5,196,107,0.1), transparent); color: #059669; padding-left: 24px; }
@@ -152,7 +152,7 @@ const landingCSS = `
 
   /* ── Ready to File Banner ── */
   .sec-ready { padding: 0 40px 80px; background: #cde8d2; }
-  .ready-box { background: linear-gradient(135deg, #064e2b 0%, #0c3320 50%, #0ba360 100%); border-radius: 24px; padding: 70px 40px; text-align: center; color: #fff; position: relative; overflow: hidden; box-shadow: 0 10px 40px rgba(11,163,96,0.3) }
+  .ready-box { background: linear-gradient(135deg, rgba(6, 78, 43, 0.85) 0%, rgba(12, 51, 32, 0.75) 50%, rgba(11, 163, 96, 0.85) 100%), url('/greenery_banner.png'); background-size: cover; background-position: center; border-radius: 24px; padding: 70px 40px; text-align: center; color: #fff; position: relative; overflow: hidden; box-shadow: 0 10px 40px rgba(11,163,96,0.3) }
   .ready-box h2 { font-size: 38px; font-weight: 700; margin-bottom: 18px; position: relative; z-index: 2; }
   .ready-box p { font-size: 16px; color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto 36px; position: relative; z-index: 2; line-height: 1.6;}
   .rb-btns { display: flex; justify-content: center; gap: 16px; position: relative; z-index: 2; }

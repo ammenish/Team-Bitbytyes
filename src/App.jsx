@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { SECTORS } from './data.js';
-import { apiListApps, apiUpdateApp, apiPayFees, apiCreateApp, apiListNotifications, apiMarkAllNotifsRead, clearTokens, getSavedUser, apiLogin } from './api.js';
+import { apiListApps, apiUpdateApp, apiPayFees, apiCreateApp, apiListNotifications, apiMarkAllNotifsRead, clearTokens, getSavedUser, apiLogin, apiCreatePaymentOrder, apiVerifyPayment, getQrCodeUrl } from './api.js';
 import Ic from './Ic.jsx';
 import Login from './Login.jsx';
 import LandingPage from './LandingPage.jsx';
@@ -9,9 +9,9 @@ import { AdminHome, UserMgmt, Templates, AppTable, HeatmapDash, SectorParams } f
 import { PPHome, NewApp } from './ProponentScreens.jsx';
 import { ScrutinyHome, ReviewQ, EDSMgmt, GistGen } from './ScrutinyScreens.jsx';
 import { MoMHome, MoMEd, Finalized } from './MoMScreens.jsx';
-import { Check, AlertTriangle } from 'lucide-react';
 
 // ── Global Styles (injected once) ─────────────────────────────────────────────
+const fontLink = document.createElement("link");
 fontLink.href = "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap";
 fontLink.rel = "stylesheet";
 document.head.appendChild(fontLink);
@@ -87,18 +87,18 @@ const ProfileSettings = ({ user, setView }) => {
             {/* Stats Card */}
             <div style={{ background: "#0a2463", borderRadius: 24, padding: "24px 0", display: "flex", justifyContent: "space-evenly", margin: "0 20px 34px", color: "#fff" }}>
                 <div style={{ textAlign: "center", flex: 1 }}>
-                    <div style={{ fontSize: 22, fontWeight: 700, color: "#3a86ff", marginBottom: 4 }}>142</div>
-                    <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: 1 }}>Projects</div>
+                    <div style={{ fontSize: 22, fontWeight: 700, color: "#3a86ff", marginBottom: 4 }}>8</div>
+                    <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: 1 }}>Applications</div>
                 </div>
                 <div style={{ width: 1, background: "rgba(255,255,255,0.15)" }}></div>
                 <div style={{ textAlign: "center", flex: 1 }}>
-                    <div style={{ fontSize: 22, fontWeight: 700, color: "#3a86ff", marginBottom: 4 }}>2.4k</div>
-                    <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: 1 }}>Votes</div>
+                    <div style={{ fontSize: 22, fontWeight: 700, color: "#05c46b", marginBottom: 4 }}>5</div>
+                    <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: 1 }}>Cleared</div>
                 </div>
                 <div style={{ width: 1, background: "rgba(255,255,255,0.15)" }}></div>
                 <div style={{ textAlign: "center", flex: 1 }}>
-                    <div style={{ fontSize: 22, fontWeight: 700, color: "#3a86ff", marginBottom: 4 }}>12</div>
-                    <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: 1 }}>Awards</div>
+                    <div style={{ fontSize: 22, fontWeight: 700, color: "#fbbf24", marginBottom: 4 }}>3</div>
+                    <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: 1 }}>Pending</div>
                 </div>
             </div>
 
@@ -107,9 +107,9 @@ const ProfileSettings = ({ user, setView }) => {
                 <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12, paddingLeft: 8 }}>Account Workspace</div>
                 <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", border: "1px solid #e2e8f0", marginBottom: 24 }}>
                     {[
-                        { t: "Personal Information", d: "Bio, contact, and professional role", i: "user" },
-                        { t: "Account Security", d: "Password, 2FA, and sessions", i: "shield" },
-                        { t: "Notification Preferences", d: "Project updates and community alerts", i: "bell" },
+                        { t: "Personal Information", d: "Name, designation, and contact details", i: "user" },
+                        { t: "Account Security", d: "Password and login sessions", i: "shield" },
+                        { t: "Notification Preferences", d: "Email, SMS, and in-app alert settings", i: "bell" },
                     ].map((m, idx) => (
                         <div key={idx} style={{ padding: "18px 20px", display: "flex", alignItems: "center", gap: 16, borderBottom: idx < 2 ? "1px solid #f1f5f9" : "none", cursor: "pointer" }}>
                             <div style={{ width: 40, height: 40, background: "#f8fafc", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", color: "#0a2463" }}><Ic n={m.i} s={18} /></div>
@@ -122,13 +122,13 @@ const ProfileSettings = ({ user, setView }) => {
                     ))}
                 </div>
 
-                <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12, paddingLeft: 8 }}>Experience Settings</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12, paddingLeft: 8 }}>System Preferences</div>
                 <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", border: "1px solid #e2e8f0" }}>
                     <div style={{ padding: "18px 20px", display: "flex", alignItems: "center", gap: 16, cursor: "pointer" }}>
                         <div style={{ width: 40, height: 40, background: "#f8fafc", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", color: "#0a2463" }}><Ic n="cog" s={18} /></div>
                         <div style={{ flex: 1 }}>
-                            <div style={{ fontSize: 14, fontWeight: 700, color: "#0a2463", marginBottom: 3 }}>AR Display Settings</div>
-                            <div style={{ fontSize: 12, color: "#94a3b8" }}>Lidar accuracy and mesh rendering</div>
+                            <div style={{ fontSize: 14, fontWeight: 700, color: "#0a2463", marginBottom: 3 }}>Language & Region</div>
+                            <div style={{ fontSize: 12, color: "#94a3b8" }}>Interface language and date format</div>
                         </div>
                         <div style={{ color: "#cbd5e1", fontWeight: 700, fontSize: 16 }}>›</div>
                     </div>
@@ -294,15 +294,89 @@ export default function App() {
             if (view === "payments") return (
                 <div className="fade-in">
                     <h1 style={{ fontFamily: "Outfit,sans-serif", fontSize: 24, fontWeight: 800, color: "#0a2463", marginBottom: 6 }}>Fee Payments</h1>
-                    <p style={{ color: "#64748b", fontSize: 13, marginBottom: 22 }}>Track and manage application fees</p>
+                    <p style={{ color: "#64748b", fontSize: 13, marginBottom: 22 }}>Pay via Cashfree — UPI, Cards, Net Banking & QR Code supported</p>
                     <div className="card" style={{ overflow: "hidden" }}>
-                        <table className="table"><thead><tr><th>App ID</th><th>Project</th><th>Fee</th><th>Status</th><th>Action</th></tr></thead>
+                        <table className="table"><thead><tr><th>App ID</th><th>Project</th><th>Fee</th><th>Status</th><th>Pay via Cashfree</th><th>QR Code</th></tr></thead>
                             <tbody>{apps.filter(a => a.proponent === (user.company || user.name)).map(a => <tr key={a.id}>
                                 <td><span style={{ fontFamily: "monospace", fontWeight: 700, color: "#1e56c2", fontSize: 12 }}>{a.id}</span></td>
                                 <td style={{ fontWeight: 500 }}>{a.project}</td>
                                 <td style={{ fontWeight: 700 }}>₹{a.fees.toLocaleString()}</td>
-                                <td><span style={{ color: a.feesPaid ? "#059669" : "#dc2626", fontWeight: 600, fontSize: 12, display: "flex", alignItems: "center", gap: 4 }}>{a.feesPaid ? <><Check size={14}/> Paid</> : <><AlertTriangle size={14}/> Pending</>}</span></td>
-                                <td>{!a.feesPaid && <button className="btn btn-primary btn-sm" onClick={() => { upd(a.id, { feesPaid: true }); notify("Payment confirmed for " + a.id); }}>Pay Now</button>}</td>
+                                <td><span style={{ color: a.feesPaid ? "#059669" : "#dc2626", fontWeight: 600, fontSize: 12 }}>{a.feesPaid ? "Paid ✓" : "Pending ⚠"}</span></td>
+                                <td>{!a.feesPaid && <button className="btn btn-primary btn-sm" onClick={async () => {
+                                    try {
+                                        const order = await apiCreatePaymentOrder(a.id);
+                                        
+                                        // ── MOCK GATEWAY (For Hackathon Demo if keys not set) ──
+                                        if (order.is_mock) {
+                                            const mockOverlay = document.createElement("div");
+                                            mockOverlay.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px);font-family:sans-serif;";
+                                            const box = document.createElement("div");
+                                            box.style.cssText = "background:#fff;width:380px;border-radius:12px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.2);animation:slideUpFade 0.3s ease;";
+                                            box.innerHTML = `
+                                                <div style="background:#552288;color:#fff;padding:20px;text-align:center;">
+                                                    <h3 style="margin:0;font-size:18px;font-weight:700">PARIVESH 3.0</h3>
+                                                    <div style="opacity:0.8;font-size:13px;margin-top:4px">Cashfree Secured Checkout</div>
+                                                </div>
+                                                <div style="padding:24px;text-align:center;">
+                                                    <div style="font-size:28px;font-weight:800;color:#0f172a;margin-bottom:8px">₹${order.amount_inr.toLocaleString()}</div>
+                                                    <div style="font-size:13px;color:#64748b;margin-bottom:24px">${order.description}</div>
+                                                    
+                                                    <button id="mock-pay-btn" style="width:100%;padding:14px;background:#552288;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:12px;transition:0.2s">Pay with UPI / Cards</button>
+                                                    <button id="mock-cancel-btn" style="width:100%;padding:14px;background:transparent;color:#64748b;border:none;font-weight:600;font-size:14px;cursor:pointer;">Cancel Payment</button>
+                                                </div>
+                                            `;
+                                            mockOverlay.appendChild(box);
+                                            document.body.appendChild(mockOverlay);
+
+                                            document.getElementById("mock-cancel-btn").onclick = () => {
+                                                mockOverlay.remove();
+                                                notify("Payment cancelled");
+                                            };
+                                            
+                                            document.getElementById("mock-pay-btn").onclick = async () => {
+                                                document.getElementById("mock-pay-btn").innerText = "Processing...";
+                                                document.getElementById("mock-pay-btn").style.opacity = "0.7";
+                                                setTimeout(async () => {
+                                                    mockOverlay.remove();
+                                                    try {
+                                                        await apiVerifyPayment({
+                                                            cf_order_id: order.order_id,
+                                                            cf_payment_id: "pay_mock_" + Math.random().toString(36).substr(2, 9),
+                                                            app_db_id: a.id,
+                                                        });
+                                                        upd(a.id, { feesPaid: true });
+                                                        notify(`✅ Payment of ₹${a.fees.toLocaleString()} confirmed for ${a.id}`);
+                                                    } catch (err) {
+                                                        notify("⚠ Payment verification failed: " + err.message);
+                                                    }
+                                                }, 1500); // simulate network delay
+                                            };
+                                            return;
+                                        }
+
+                                        // ── REAL CASHFREE GATEWAY ──
+                                        const cashfree = await window.Cashfree({
+                                            mode: "sandbox" // Change to "production" for live
+                                        });
+
+                                        const checkoutOptions = {
+                                            paymentSessionId: order.payment_session_id,
+                                            redirectTarget: "_modal"
+                                        };
+                                        cashfree.checkout(checkoutOptions);
+                                        
+                                        // Usually Cashfree provides a callback or redirects. For this demo,
+                                        // we'll listen for the message event, or in a real setup, rely on webhooks.
+                                        // Polling could be added here to check payment status if using _modal.
+
+                                    } catch (err) {
+                                        notify("⚠ " + err.message);
+                                    }
+                                }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:6}}><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Pay via Cashfree</button>}</td>
+                                <td>{!a.feesPaid && <button className="btn btn-secondary btn-sm" onClick={() => {
+                                    const w = window.open('', 'QR Code', 'width=400,height=500');
+                                    w.document.write(`<html><head><title>QR Payment — ${a.app_id || a.id}</title></head><body style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;background:#f8fafc;margin:0"><h2 style="color:#0a2463">Scan to Pay</h2><p style="color:#64748b">₹${a.fees.toLocaleString()} — ${a.project}</p><img src="${getQrCodeUrl(a.id)}" style="width:280px;height:280px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1)" /><p style="color:#94a3b8;font-size:13px;margin-top:16px">UPI QR Code • PARIVESH 3.0</p></body></html>`);
+                                }}>📱 Show QR</button>}</td>
                             </tr>)}</tbody></table>
                     </div>
                 </div>

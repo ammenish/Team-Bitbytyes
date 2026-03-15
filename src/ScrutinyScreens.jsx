@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Ic from './Ic.jsx';
 import { Badge, StatCard, WorkflowBar } from './helpers.jsx';
 import { apiAiScrutiny, apiGetEdsPoints, apiAiGenerateGist } from './api.js';
-import { Check, AlertTriangle, Bot, Sparkles, ClipboardList, CheckCircle, AlertCircle, XCircle, BarChart, FileText } from 'lucide-react';
 
 export const ScrutinyHome = ({ apps }) => (
     <div className="fade-in">
@@ -20,7 +19,7 @@ export const ScrutinyHome = ({ apps }) => (
                     <td><span style={{ fontWeight: 700, color: "#1e56c2", fontFamily: "monospace", fontSize: 12 }}>{a.id}</span></td>
                     <td style={{ fontWeight: 500 }}>{a.proponent}</td>
                     <td style={{ fontSize: 12 }}>{a.category}</td>
-                    <td><span style={{ color: a.feesPaid ? "#059669" : "#dc2626", fontWeight: 600, fontSize: 12, display: "flex", gap: 4, alignItems: "center" }}>₹{a.fees.toLocaleString()} {a.feesPaid ? <Check size={12}/> : <AlertTriangle size={12}/>}</span></td>
+                    <td><span style={{ color: a.feesPaid ? "#059669" : "#dc2626", fontWeight: 600, fontSize: 12 }}>₹{a.fees.toLocaleString()} {a.feesPaid ? "✓" : "⚠"}</span></td>
                     <td><Badge t={a.status} /></td>
                 </tr>)}</tbody></table>
         </div>
@@ -88,14 +87,14 @@ export const ReviewQ = ({ apps, upd, notify }) => {
                         </div>
                         <WorkflowBar status={app.status} />
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, margin: "14px 0" }}>
-                            {[["Filed", app.date], ["Fee", "₹" + app.fees.toLocaleString()], ["Paid", app.feesPaid ? <span style={{display: "flex", alignItems: "center", gap: 4}}><Check size={12}/> Yes</span> : <span style={{display: "flex", alignItems: "center", gap: 4}}><AlertTriangle size={12}/> No</span>], ["Docs", app.docs.length + " files"]].map(([k, v]) => <div key={k} style={{ padding: "9px 12px", background: "#f8fafc", borderRadius: 8, border: "1px solid #dce3ef" }}><div style={{ fontSize: 11, color: "#64748b", fontWeight: 600, textTransform: "uppercase" }}>{k}</div><div style={{ fontSize: 13, fontWeight: 600, marginTop: 1 }}>{v}</div></div>)}
+                            {[["Filed", app.date], ["Fee", "₹" + app.fees.toLocaleString()], ["Paid", app.feesPaid ? "✓ Yes" : "⚠ No"], ["Docs", app.docs.length + " files"]].map(([k, v]) => <div key={k} style={{ padding: "9px 12px", background: "#f8fafc", borderRadius: 8, border: "1px solid #dce3ef" }}><div style={{ fontSize: 11, color: "#64748b", fontWeight: 600, textTransform: "uppercase" }}>{k}</div><div style={{ fontSize: 13, fontWeight: 600, marginTop: 1 }}>{v}</div></div>)}
                         </div>
                         <div style={{ marginBottom: 14 }}><div style={{ fontSize: 11, fontWeight: 600, color: "#64748b", textTransform: "uppercase", marginBottom: 7 }}>Documents</div><div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>{app.docs.map(d => <span key={d} className="badge" style={{ background: "#eff6ff", color: "#2563eb" }}><Ic n="doc" s={10} /> {d}</span>)}</div></div>
                         
                         {/* AI Scrutiny Button */}
                         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
                             <button className="btn" style={{ background: "linear-gradient(135deg, #7c3aed, #a855f7)", color: "#fff", border: "none" }} onClick={() => runAiScrutiny(app)} disabled={aiLoading}>
-                                {aiLoading ? <><span style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />AI Analyzing…</> : <><Bot size={16}/> AI Auto-Scrutiny</>}
+                                {aiLoading ? <><span style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />AI Analyzing…</> : <>🤖 AI Auto-Scrutiny</>}
                             </button>
                             {app.status === "Submitted" && <button className="btn btn-primary" onClick={() => { upd(app.id, { status: "Under Scrutiny" }); notify("Review started for " + app.id); }}><Ic n="eye" s={14} />Start Review</button>}
                             {app.status === "Under Scrutiny" && <>
@@ -108,18 +107,17 @@ export const ReviewQ = ({ apps, upd, notify }) => {
                     {/* AI Scrutiny Results Panel */}
                     {aiResult && <div className="card" style={{ padding: 22, border: "2px solid #a855f7" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                            <div style={{ width: 40, height: 40, borderRadius: 12, background: "linear-gradient(135deg, #7c3aed, #a855f7)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff" }}><Bot size={22} /></div>
+                            <div style={{ width: 40, height: 40, borderRadius: 12, background: "linear-gradient(135deg, #7c3aed, #a855f7)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 18 }}>🤖</div>
                             <div>
                                 <h3 style={{ fontFamily: "Outfit,sans-serif", fontWeight: 700, fontSize: 16, color: "#0a2463" }}>AI Scrutiny Report</h3>
-                                <div style={{ fontSize: 11, color: "#64748b", display: "flex", alignItems: "center", gap: 4 }}>{aiResult.ai_powered ? <><Sparkles size={12} color="#a855f7" /> Powered by Gemini AI</> : <><ClipboardList size={12} /> Rule-based analysis</>}</div>
+                                <div style={{ fontSize: 11, color: "#64748b" }}>{aiResult.ai_powered ? "✨ Powered by Gemini AI" : "📋 Rule-based analysis"}</div>
                             </div>
                             <div style={{ marginLeft: "auto" }}>
                                 <span style={{ 
                                     padding: "6px 14px", borderRadius: 20, fontWeight: 700, fontSize: 12,
                                     background: aiResult.risk_level === "LOW" ? "#dcfce7" : aiResult.risk_level === "MEDIUM" ? "#fef3c7" : "#fef2f2",
-                                    color: aiResult.risk_level === "LOW" ? "#166534" : aiResult.risk_level === "MEDIUM" ? "#92400e" : "#991b1b",
-                                    display: "flex", alignItems: "center", gap: 4
-                                }}>{aiResult.risk_level === "LOW" ? <CheckCircle size={14}/> : aiResult.risk_level === "MEDIUM" ? <AlertTriangle size={14}/> : <AlertCircle size={14}/>} {aiResult.risk_level} RISK</span>
+                                    color: aiResult.risk_level === "LOW" ? "#166534" : aiResult.risk_level === "MEDIUM" ? "#92400e" : "#991b1b"
+                                }}>{aiResult.risk_level === "LOW" ? "✅" : aiResult.risk_level === "MEDIUM" ? "⚠️" : "🔴"} {aiResult.risk_level} RISK</span>
                             </div>
                         </div>
 
@@ -144,7 +142,7 @@ export const ReviewQ = ({ apps, upd, notify }) => {
 
                         {/* Present Documents */}
                         {aiResult.present_documents?.length > 0 && <div style={{ marginBottom: 14 }}>
-                            <div style={{ fontSize: 12, fontWeight: 700, color: "#059669", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}><CheckCircle size={14}/> Documents Found ({aiResult.present_documents.length})</div>
+                            <div style={{ fontSize: 12, fontWeight: 700, color: "#059669", marginBottom: 6 }}>✅ Documents Found ({aiResult.present_documents.length})</div>
                             <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
                                 {aiResult.present_documents.map((d, i) => <span key={i} style={{ padding: "3px 10px", background: "#dcfce7", color: "#166534", borderRadius: 12, fontSize: 11, fontWeight: 600 }}>{d}</span>)}
                             </div>
@@ -152,7 +150,7 @@ export const ReviewQ = ({ apps, upd, notify }) => {
 
                         {/* Missing Documents */}
                         {aiResult.missing_documents?.length > 0 && <div style={{ marginBottom: 14 }}>
-                            <div style={{ fontSize: 12, fontWeight: 700, color: "#dc2626", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}><XCircle size={14}/> Missing Documents ({aiResult.missing_documents.length})</div>
+                            <div style={{ fontSize: 12, fontWeight: 700, color: "#dc2626", marginBottom: 6 }}>❌ Missing Documents ({aiResult.missing_documents.length})</div>
                             <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
                                 {aiResult.missing_documents.map((d, i) => <span key={i} style={{ padding: "3px 10px", background: "#fef2f2", color: "#991b1b", borderRadius: 12, fontSize: 11, fontWeight: 600 }}>{d}</span>)}
                             </div>
@@ -160,19 +158,19 @@ export const ReviewQ = ({ apps, upd, notify }) => {
 
                         {/* AI Recommendation */}
                         <div style={{ padding: 14, background: "#f8fafc", borderRadius: 10, border: "1px solid #e2e8f0", marginBottom: 12 }}>
-                            <div style={{ fontSize: 12, fontWeight: 700, color: "#0a2463", marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}><BarChart size={14}/> Recommendation</div>
+                            <div style={{ fontSize: 12, fontWeight: 700, color: "#0a2463", marginBottom: 4 }}>📊 Recommendation</div>
                             <p style={{ fontSize: 13, color: "#475569", margin: 0, lineHeight: 1.6 }}>{aiResult.recommendation}</p>
                         </div>
 
                         {/* AI Insights (Gemini) */}
                         {aiResult.ai_insights && <div style={{ padding: 14, background: "linear-gradient(135deg, #faf5ff, #f3e8ff)", borderRadius: 10, border: "1px solid #d8b4fe", marginBottom: 12 }}>
-                            <div style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}><Sparkles size={14}/> Gemini AI Insights</div>
+                            <div style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", marginBottom: 4 }}>✨ Gemini AI Insights</div>
                             <p style={{ fontSize: 13, color: "#581c87", margin: 0, lineHeight: 1.6 }}>{aiResult.ai_insights}</p>
                         </div>}
 
                         {/* Suggested EDS Points */}
                         {aiResult.suggested_eds_points?.length > 0 && <div style={{ marginBottom: 12 }}>
-                            <div style={{ fontSize: 12, fontWeight: 700, color: "#d97706", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}><FileText size={14}/> Suggested EDS Points</div>
+                            <div style={{ fontSize: 12, fontWeight: 700, color: "#d97706", marginBottom: 6 }}>📝 Suggested EDS Points</div>
                             {aiResult.suggested_eds_points.slice(0, 8).map((e, i) => (
                                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "6px 0", borderBottom: "1px solid #f1f5f9", fontSize: 12, color: "#475569" }}>
                                     <span style={{ color: "#d97706", fontWeight: 800, minWidth: 18 }}>{i + 1}.</span>
@@ -183,8 +181,8 @@ export const ReviewQ = ({ apps, upd, notify }) => {
 
                         {/* Quick Actions from AI */}
                         {app.status === "Under Scrutiny" && <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
-                            {aiResult.completeness_score >= 80 && <button className="btn btn-success" onClick={() => { upd(app.id, { status: "Referred for Meeting", reviewer: "AI-Verified" }); notify(app.id + " auto-referred (AI: " + aiResult.completeness_score + "% complete)"); setSel(null); setAiResult(null); }}><CheckCircle size={14}/> AI Recommends: Refer for Meeting</button>}
-                            {aiResult.completeness_score < 80 && <button className="btn btn-danger" onClick={() => { setSelectedEds(aiResult.suggested_eds_points || []); setShowEds(true); }}><AlertTriangle size={14}/> AI Recommends: Issue EDS ({aiResult.total_missing} missing)</button>}
+                            {aiResult.completeness_score >= 80 && <button className="btn btn-success" onClick={() => { upd(app.id, { status: "Referred for Meeting", reviewer: "AI-Verified" }); notify(app.id + " auto-referred (AI: " + aiResult.completeness_score + "% complete)"); setSel(null); setAiResult(null); }}>✅ AI Recommends: Refer for Meeting</button>}
+                            {aiResult.completeness_score < 80 && <button className="btn btn-danger" onClick={() => { setSelectedEds(aiResult.suggested_eds_points || []); setShowEds(true); }}>⚠ AI Recommends: Issue EDS ({aiResult.total_missing} missing)</button>}
                         </div>}
                     </div>}
 
@@ -208,8 +206,8 @@ export const ReviewQ = ({ apps, upd, notify }) => {
 
                 {/* Standard EDS Points Dropdown */}
                 <div style={{ marginBottom: 14 }}>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: "#0a2463", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}><ClipboardList size={14}/> Standard EDS Points (click to add)</div>
-                    <div style={{ display: "grid", gap: 6, gridTemplateColumns: "1fr 1fr" }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "#0a2463", marginBottom: 6 }}>📋 Standard EDS Points (click to add)</div>
+                    <div style={{ maxHeight: 200, overflow: "auto", border: "1px solid #e2e8f0", borderRadius: 8, padding: 6 }}>
                         {edsPoints.map((p, i) => (
                             <div key={i} onClick={() => toggleEdsPoint(p)} style={{ 
                                 padding: "7px 10px", cursor: "pointer", borderRadius: 6, fontSize: 12, fontWeight: 500,
@@ -287,14 +285,14 @@ export const GistGen = ({ apps, upd, notify }) => {
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
                         <div><div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 3 }}><span style={{ fontFamily: "monospace", fontWeight: 700, color: "#1e56c2", fontSize: 12 }}>{a.id}</span><Badge t={a.status} /></div><div style={{ fontWeight: 600, color: "#0a2463" }}>{a.project}</div><div style={{ fontSize: 12, color: "#64748b" }}>{a.category} · {a.sector}</div></div>
                         <button className="btn" style={{ background: "linear-gradient(135deg, #7c3aed, #a855f7)", color: "#fff", border: "none" }} onClick={() => generate(a)} disabled={gen === a.id}>
-                            {gen === a.id ? <><span style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />AI Generating…</> : <><Bot size={14}/> Generate Gist (AI)</>}
+                            {gen === a.id ? <><span style={{ width: 13, height: 13, border: "2px solid rgba(255,255,255,0.3)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.8s linear infinite", display: "inline-block" }} />AI Generating…</> : <>🤖 Generate Gist (AI)</>}
                         </button>
                     </div>
                 </div>)}
 
                 {gistResult && <div className="card" style={{ padding: 18, border: "2px solid #a855f7" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                            <span style={{ fontSize: 18, display: "flex", alignItems: "center", justifyContent: "center" }}><Bot size={18}/></span>
+                        <span style={{ fontSize: 18 }}>🤖</span>
                         <h3 style={{ fontFamily: "Outfit,sans-serif", fontWeight: 700, fontSize: 14, color: "#7c3aed", margin: 0 }}>Generated Gist</h3>
                         <span style={{ padding: "2px 8px", background: gistResult.ai_generated ? "#f3e8ff" : "#f0f9ff", color: gistResult.ai_generated ? "#7c3aed" : "#0369a1", borderRadius: 10, fontSize: 10, fontWeight: 700, marginLeft: "auto" }}>{gistResult.source}</span>
                     </div>

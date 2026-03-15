@@ -3,7 +3,6 @@ import landingCSS from './landingStyles.js';
 import { apiLogin, apiFetchClearanceStats } from './api.js';
 import { DashboardHub, ECCRZDashboard, FCDashboard, WLCDashboard, CAMPADashboard } from './PublicDashboards.jsx';
 import HelpBox from './HelpBox.jsx';
-import { Home, Globe, TreePine, PawPrint, IndianRupee, Crown, HardHat, Search, FileText, Twitter, Instagram, Facebook, Link, Youtube } from 'lucide-react';
 
 // Inject landing page styles
 const lpStyle = document.createElement("style");
@@ -167,26 +166,25 @@ const LandingPage = ({ onLogin }) => {
                     <div className="nav-dropdown-wrapper">
                         <span className={`nav-item ${["Dashboard","ECCRZ","FC","WLC","CAMPA"].includes(tab) ? "active" : ""}`} onClick={() => setTab("Dashboard")}>Dashboard <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{verticalAlign: "middle", marginLeft: 2, marginTop: -2}}><polyline points="6 9 12 15 18 9"/></svg></span>
                         <div className="nav-dropdown">
-                            <div className="nav-dd-item" onClick={() => { setTab("Dashboard"); window.scrollTo(0,0); }}><Home size={14}/> Dashboard Hub</div>
-                            <div className="nav-dd-item" onClick={() => { setTab("ECCRZ"); window.scrollTo(0,0); }}><Globe size={14}/> EC / CRZ MIS</div>
-                            <div className="nav-dd-item" onClick={() => { setTab("FC"); window.scrollTo(0,0); }}><TreePine size={14}/> Forest Clearance</div>
-                            <div className="nav-dd-item" onClick={() => { setTab("WLC"); window.scrollTo(0,0); }}><PawPrint size={14}/> Wildlife Clearance</div>
-                            <div className="nav-dd-item" onClick={() => { setTab("CAMPA"); window.scrollTo(0,0); }}><IndianRupee size={14}/> National CAMPA</div>
+                            <div className="nav-dd-item" onClick={() => { setTab("Dashboard"); window.scrollTo(0,0); }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:8,verticalAlign:"middle"}}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Dashboard Hub</div>
+                            <div className="nav-dd-item" onClick={() => { setTab("ECCRZ"); window.scrollTo(0,0); }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:8,verticalAlign:"middle"}}><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>EC / CRZ MIS</div>
+                            <div className="nav-dd-item" onClick={() => { setTab("FC"); window.scrollTo(0,0); }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" style={{marginRight:8,verticalAlign:"middle"}}><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>Forest Clearance</div>
+                            <div className="nav-dd-item" onClick={() => { setTab("WLC"); window.scrollTo(0,0); }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:8,verticalAlign:"middle"}}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Wildlife Clearance</div>
+                            <div className="nav-dd-item" onClick={() => { setTab("CAMPA"); window.scrollTo(0,0); }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:8,verticalAlign:"middle"}}><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>National CAMPA</div>
                         </div>
                     </div>
                     <span className={`nav-item ${tab === "Contact" ? "active" : ""}`} onClick={() => setTab("Contact")}>Contact</span>
                     <span className={`nav-item ${tab === "Clearance" ? "active" : ""}`} onClick={() => setTab("Clearance")}>Clearance <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{verticalAlign: "middle", marginLeft: 2, marginTop: -2}}><polyline points="6 9 12 15 18 9"/></svg></span>
                     <div className="nav-actions">
-                        <div className="login-dropdown-wrapper" style={{ padding: "10px" }}>
-                            <button className="login-btn" onClick={() => onLogin()}>Login <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{verticalAlign: "middle", marginLeft: 2, marginTop: -2}}><polyline points="6 9 12 15 18 9"/></svg></button>
+                        <div className="login-dropdown-wrapper">
+                            <button className="reg-btn">Login <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{verticalAlign: "middle", marginLeft: 4, marginTop: -1}}><polyline points="6 9 12 15 18 9"/></svg></button>
                             <div className="login-dropdown">
-                                <div className="dropdown-item" onClick={() => handleQuickLogin('admin')}><Crown size={18}/> Admin</div>
-                                <div className="dropdown-item" onClick={() => handleQuickLogin('proponent')}><HardHat size={18}/> Proponent</div>
-                                <div className="dropdown-item" onClick={() => handleQuickLogin('scrutiny')}><Search size={18}/> Scrutiny</div>
-                                <div className="dropdown-item" onClick={() => handleQuickLogin('mom')}><FileText size={18}/> MoM Team</div>
+                                <div className="dropdown-item" onClick={() => handleQuickLogin('admin')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" strokeWidth="2" style={{marginRight:8,verticalAlign:"middle"}}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>Admin</div>
+                                <div className="dropdown-item" onClick={() => handleQuickLogin('proponent')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2" style={{marginRight:8,verticalAlign:"middle"}}><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Proponent</div>
+                                <div className="dropdown-item" onClick={() => handleQuickLogin('scrutiny')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1e56c2" strokeWidth="2" style={{marginRight:8,verticalAlign:"middle"}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Scrutiny</div>
+                                <div className="dropdown-item" onClick={() => handleQuickLogin('mom')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2" style={{marginRight:8,verticalAlign:"middle"}}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>MoM Team</div>
                             </div>
                         </div>
-                        <button className="reg-btn">Register</button>
                     </div>
                 </nav>
             </header >
@@ -199,7 +197,7 @@ const LandingPage = ({ onLogin }) => {
                             <video src="/animation1.mp4" autoPlay loop muted playsInline className="hero-bg-video" />
                             <div className="hero-overlay"></div>
                             <div className="hero-content">
-                                <span className="hero-badge animate-slide-up"><Globe size={14} style={{ marginRight: 4 }}/> PARIVESH 3.0 Initiative</span>
+                                <span className="hero-badge animate-slide-up">🌐 PARIVESH 3.0 Initiative</span>
                                 <h1 className="hero-title animate-slide-up delay-1">Environmental Clearance <span className="text-green">Made Digital</span></h1>
                                 <p className="hero-desc animate-slide-up delay-2">
                                     A unified portal managing the complete lifecycle of environmental clearance applications, from initial filing to final Minutes of Meeting publication.
@@ -319,8 +317,8 @@ const LandingPage = ({ onLogin }) => {
                                 <h2 className="scroll-reveal">Ready to File Your Application?</h2>
                                 <p className="scroll-reveal" data-delay="150">Register as a Project Proponent or Qualified Professional to begin the environmental clearance process.</p>
                                 <div className="rb-btns scroll-reveal" data-delay="300">
-                                    <button className="rb-btn1">Register Now</button>
-                                    <button className="rb-btn2" onClick={onLogin}>Sign In</button>
+                                    <button className="rb-btn1" onClick={() => handleQuickLogin('proponent')}>Register Now</button>
+                                    <button className="rb-btn2" onClick={() => handleQuickLogin('proponent')}>Sign In</button>
                                 </div>
                             </div>
                         </section>
@@ -397,22 +395,108 @@ const LandingPage = ({ onLogin }) => {
             {tab === "CAMPA" && <CAMPADashboard onBack={() => setTab("Dashboard")} />}
             {
                 tab === "Contact" && (
-                    <div className="about-body" style={{ minHeight: "60vh", display: "flex", justifyContent: "center", alignItems: "center", textAlign: "center" }}>
-                        <div style={{ textAlign: "center" }}>
-                            <h2 style={{ fontSize: 32, color: "#0c3320", marginBottom: 16 }}>Contact Us</h2>
-                            <p style={{ color: "#2d5a3f", fontSize: 16, maxWidth: 600, margin: "0 auto", lineHeight: 1.8 }}>Toll Free: <strong style={{color:"#05c46b"}}>1800 11 9792</strong><br/>Email: <strong style={{color:"#05c46b"}}>support@parivesh.gov.in</strong><br/>Chatbot assistance is available 24/7.</p>
-                            <button className="btn-get" style={{ margin: "30px auto 0" }} onClick={() => setTab("Home")}>Return Home</button>
+                    <div className="about-body animate-slide-up" style={{ padding: "60px 40px", background: "#f8fafc" }}>
+                        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+                            <div style={{ textAlign: "center", marginBottom: 50 }}>
+                                <h1 style={{ fontSize: 36, fontWeight: 800, color: "#0a2463", marginBottom: 12 }}>Contact Support</h1>
+                                <p style={{ color: "#64748b", fontSize: 16 }}>Official Helpdesk and Technical Support for PARIVESH 3.0</p>
+                            </div>
+
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 30, marginBottom: 40 }}>
+                                <div className="card" style={{ padding: 30, borderTop: "4px solid #05c46b" }}>
+                                    <h3 style={{ fontSize: 18, fontWeight: 700, color: "#0a2463", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
+                                        <div style={{ padding: 8, background: "#d1fae5", borderRadius: 8, color: "#059669" }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                                        Toll Free Helpdesk
+                                    </h3>
+                                    <div style={{ fontSize: 24, fontWeight: 800, color: "#05c46b", marginBottom: 8 }}>1800 11 9792</div>
+                                    <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.6 }}>Available 9:00 AM to 5:30 PM on all working days (Monday to Friday, excluding Gazetted holidays).</p>
+                                </div>
+
+                                <div className="card" style={{ padding: 30, borderTop: "4px solid #1e56c2" }}>
+                                    <h3 style={{ fontSize: 18, fontWeight: 700, color: "#0a2463", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
+                                        <div style={{ padding: 8, background: "#dbeafe", borderRadius: 8, color: "#1e56c2" }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                                        Email Support
+                                    </h3>
+                                    <div style={{ marginBottom: 16 }}>
+                                        <div style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", marginBottom: 4 }}>Environment Clearance</div>
+                                        <div style={{ fontSize: 15, fontWeight: 600, color: "#1e56c2" }}>monitoring-ec@nic.in</div>
+                                    </div>
+                                    <div>
+                                        <div style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", marginBottom: 4 }}>Forest Clearance</div>
+                                        <div style={{ fontSize: 15, fontWeight: 600, color: "#1e56c2" }}>monitoring-fc@nic.in</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="card" style={{ padding: 30, marginBottom: 30 }}>
+                                <h3 style={{ fontSize: 18, fontWeight: 700, color: "#0a2463", marginBottom: 22 }}>Technical Support (ESCALATION LEVEL-II)</h3>
+                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+                                    <div style={{ background: "#f1f5f9", padding: 20, borderRadius: 12 }}>
+                                        <div style={{ fontWeight: 700, fontSize: 15, color: "#0f172a" }}>Shri Navin Kishore Karan</div>
+                                        <div style={{ fontSize: 13, color: "#64748b", marginTop: 4 }}>Scientist-F, NIC MoEFCC</div>
+                                        <div style={{ fontSize: 14, fontWeight: 600, color: "#05c46b", marginTop: 10 }}>hod-env@nic.in</div>
+                                    </div>
+                                    <div style={{ background: "#f1f5f9", padding: 20, borderRadius: 12 }}>
+                                        <div style={{ fontWeight: 700, fontSize: 15, color: "#0f172a" }}>Shri Prabhakar Kumar</div>
+                                        <div style={{ fontSize: 13, color: "#64748b", marginTop: 4 }}>Scientist-B, NIC MoEFCC</div>
+                                        <div style={{ fontSize: 14, fontWeight: 600, color: "#05c46b", marginTop: 10 }}>officer4.env@nic.in</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style={{ textAlign: "center", marginTop: 40 }}>
+                                <button className="btn btn-primary" onClick={() => setTab("Home")}>Return to Homepage</button>
+                            </div>
                         </div>
                     </div>
                 )
             }
             {
                 tab === "Clearance" && (
-                    <div className="about-body" style={{ minHeight: "60vh", display: "flex", justifyContent: "center", alignItems: "center", textAlign: "center" }}>
-                        <div style={{ textAlign: "center" }}>
-                            <h2 style={{ fontSize: 32, color: "#0c3320", marginBottom: 16 }}>Clearance Services</h2>
-                            <p style={{ color: "#2d5a3f", fontSize: 16, maxWidth: 600, margin: "0 auto", lineHeight: 1.6 }}>Explore comprehensive guidelines, application types, and sector-wise manuals for submitting your environmental clearance proposals.</p>
-                            <button className="btn-get" style={{ margin: "30px auto 0" }} onClick={() => setTab("Home")}>Return Home</button>
+                    <div className="about-body animate-slide-up" style={{ padding: "60px 40px", background: "#f8fafc" }}>
+                        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+                            <div style={{ textAlign: "center", marginBottom: 50 }}>
+                                <h1 style={{ fontSize: 36, fontWeight: 800, color: "#0a2463", marginBottom: 12 }}>Clearance Services</h1>
+                                <p style={{ color: "#64748b", fontSize: 16 }}>Integrated system for Environment, Forest, Wildlife and CRZ clearances</p>
+                            </div>
+
+                            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 20, marginBottom: 40 }}>
+                                {[
+                                    { t: "EC Clearance", c: "#05c46b", d: "Environmental Impact Assessment based approvals for projects." },
+                                    { t: "FC Clearance", c: "#1e56c2", d: "Diversion of forest land for non-forest infrastructure." },
+                                    { t: "WL Clearance", c: "#ea580c", d: "Clearances for activities in and around protected areas." },
+                                    { t: "CRZ Clearance", c: "#0077b6", d: "Regulation and development in Coastal Regulated Zones." }
+                                ].map((srv, i) => (
+                                    <div key={i} className="card" style={{ padding: 24, borderLeft: `5px solid ${srv.c}` }}>
+                                        <h4 style={{ fontWeight: 800, color: "#0a2463", marginBottom: 10 }}>{srv.t}</h4>
+                                        <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.5 }}>{srv.d}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="card" style={{ padding: 40, background: "linear-gradient(135deg, #0a2463, #1e56c2)", color: "#fff" }}>
+                                <div style={{ display: "flex", gap: 30, alignItems: "center" }}>
+                                    <div style={{ flex: 1 }}>
+                                        <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 14 }}>How to file your application?</h2>
+                                        <p style={{ fontSize: 15, opacity: 0.9, marginBottom: 20, lineHeight: 1.6 }}>PARIVESH utilizes a secure **OTP-based authentication** system. Applicants must register via their official mobile number. Once logged in, you can prepare, submit, and track your proposals across multiple agencies through a unified dashboard.</p>
+                                        <ul style={{ fontSize: 14, opacity: 0.9, marginLeft: 20, marginBottom: 24 }}>
+                                            <li>One-time Registration for Project Proponents</li>
+                                            <li>Online Form Filling (Form 1, 1A, EIA/EMP)</li>
+                                            <li>Real-time track and trace mechanism</li>
+                                        </ul>
+                                        <button className="btn" style={{ background: "#05c46b", color: "#fff", border: "none" }} onClick={() => onLogin()}>Get Started Now</button>
+                                    </div>
+                                    <div style={{ width: 200, display: "flex", justifyContent: "center" }}>
+                                        <div style={{ width: 140, height: 140, borderRadius: "50%", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="11" r="3"/><circle cx="12" cy="10" r="1"/></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style={{ textAlign: "center", marginTop: 40 }}>
+                                <button className="btn btn-secondary" onClick={() => setTab("Home")}>Return to Homepage</button>
+                            </div>
                         </div>
                     </div>
                 )
@@ -535,7 +619,7 @@ const LandingPage = ({ onLogin }) => {
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 30 }}>
                     <div className="social-icons">
-                        {[<Twitter size={16}/>, <Instagram size={16}/>, <Facebook size={16}/>, <Link size={16}/>, <Youtube size={16}/>].map((ic, i) => <div key={i} className="s-icon-box">{ic}</div>)}
+                        {["𝕏", "📷", "f", "🔗", "▶"].map((ic, i) => <div key={i} className="s-icon-box">{ic}</div>)}
                     </div>
                     <div className="ft-visitor-box">
                         <div className="v-lbl">Total Visitors</div>

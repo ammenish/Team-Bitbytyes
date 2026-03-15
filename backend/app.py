@@ -34,7 +34,7 @@ def create_app(config_name=None):
         from models import User, Application, Notification, Document  # noqa: F401
 
     # ── Register blueprints ────────────────────────────────────────────
-    from routes import auth_bp, users_bp, apps_bp, notifs_bp, downloads_bp, statistics_bp, ai_bp
+    from routes import auth_bp, users_bp, apps_bp, notifs_bp, downloads_bp, statistics_bp, ai_bp, payments_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(users_bp)
     app.register_blueprint(apps_bp)
@@ -42,6 +42,7 @@ def create_app(config_name=None):
     app.register_blueprint(downloads_bp)
     app.register_blueprint(statistics_bp)
     app.register_blueprint(ai_bp)
+    app.register_blueprint(payments_bp)
 
     # ── Health check ───────────────────────────────────────────────────
     @app.route("/api/health", methods=["GET"])
@@ -91,6 +92,10 @@ if __name__ == "__main__":
             db.create_all()
             print("📦 Database tables created")
 
+        # ── Start background SLA scheduler ─────────────────────────────
+        from services.sla_scheduler import init_sla_scheduler
+        init_sla_scheduler(app)
+
         host = os.getenv("HOST", "0.0.0.0")
         port = int(os.getenv("PORT", 5000))
         print(f"""
@@ -98,6 +103,7 @@ if __name__ == "__main__":
 ║   🌿 PARI✓ESH 3.0 — Backend API Server          ║
 ║   📡 Running on http://{host}:{port}              ║
 ║   🔧 Environment: {os.getenv('FLASK_ENV', 'development'):>10}             ║
+║   ⏰ SLA Scheduler: Active (nightly at 00:00)    ║
 ╚══════════════════════════════════════════════════╝
         """)
         app.run(host=host, port=port, debug=True)

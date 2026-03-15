@@ -1,4 +1,4 @@
-import { Globe, TreePine, PawPrint, IndianRupee, Factory, ClipboardList, FileText, RefreshCw, Waves, Hourglass, CheckCircle, Flag, XCircle, Coins, Upload, BarChart as BarChartIcon, Sprout, Droplets, Leaf, Flame, Mountain, Flower2, HardHat, Bug, Users, Microscope, BookOpen } from 'lucide-react';
+import { useState, useEffect, useRef } from "react";
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SHARED CHART COMPONENTS (Pure CSS/SVG — No Libraries Needed)
@@ -15,7 +15,7 @@ const AnimatedNumber = ({ val, dur = 1500 }) => {
 };
 
 // Horizontal Bar Chart
-const CustomBarChart = ({ data, maxVal, color = "#2563eb", height = 28 }) => (
+const BarChart = ({ data, maxVal, color = "#2563eb", height = 28 }) => (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {data.map((d, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -132,10 +132,10 @@ export const DashboardHub = ({ onNavigate }) => (
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24, maxWidth: 1200, margin: "0 auto" }}>
             {[
-                { title: "Environmental Clearance", sub: "EC / CRZ MIS Dashboard", icon: <Globe size={28}/>, color: "#2563eb", bg: "linear-gradient(135deg, #2563eb, #1d4ed8)", desc: "Sector-wise clearances, ToR, amendments & compliance", tab: "ECCRZ" },
-                { title: "Forest Clearance", sub: "FC Public Dashboard", icon: <TreePine size={28}/>, color: "#16a34a", bg: "linear-gradient(135deg, #16a34a, #15803d)", desc: "Stage-I & II approvals, state-wise distribution", tab: "FC" },
-                { title: "Wildlife Clearance", sub: "WLC Public Dashboard", icon: <PawPrint size={28}/>, color: "#ea580c", bg: "linear-gradient(135deg, #ea580c, #c2410c)", desc: "Permit status, NBWL recommendations & species data", tab: "WLC" },
-                { title: "National CAMPA", sub: "CAMPA State Dashboard", icon: <IndianRupee size={28}/>, color: "#047857", bg: "linear-gradient(135deg, #047857, #065f46)", desc: "Fund utilization, afforestation progress & activities", tab: "CAMPA" },
+                { title: "Environmental Clearance", sub: "EC / CRZ MIS Dashboard", icon: "🌍", color: "#2563eb", bg: "linear-gradient(135deg, #2563eb, #1d4ed8)", desc: "Sector-wise clearances, ToR, amendments & compliance", tab: "ECCRZ" },
+                { title: "Forest Clearance", sub: "FC Public Dashboard", icon: "🌲", color: "#16a34a", bg: "linear-gradient(135deg, #16a34a, #15803d)", desc: "Stage-I & II approvals, state-wise distribution", tab: "FC" },
+                { title: "Wildlife Clearance", sub: "WLC Public Dashboard", icon: "🐾", color: "#ea580c", bg: "linear-gradient(135deg, #ea580c, #c2410c)", desc: "Permit status, NBWL recommendations & species data", tab: "WLC" },
+                { title: "National CAMPA", sub: "CAMPA State Dashboard", icon: "₹", color: "#047857", bg: "linear-gradient(135deg, #047857, #065f46)", desc: "Fund utilization, afforestation progress & activities", tab: "CAMPA" },
             ].map((d, i) => (
                 <div key={i} onClick={() => onNavigate(d.tab)} style={{ background: "#fff", borderRadius: 20, overflow: "hidden", cursor: "pointer", transition: "all 0.25s ease", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", border: "1px solid #e2e8f0" }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.12)"; }} onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.06)"; }}>
                     <div style={{ background: d.bg, padding: "30px 24px", display: "flex", alignItems: "center", gap: 16, color: "#fff" }}>
@@ -165,12 +165,12 @@ export const ECCRZDashboard = ({ onBack }) => {
     const [year, setYear] = useState("2025");
 
     const statCards = [
-        { label: "EC Granted", val: 8426, color: "#2563eb", icon: <Factory size={22}/> },
-        { label: "ToR Granted", val: 5218, color: "#7c3aed", icon: <ClipboardList size={22}/> },
-        { label: "EC Amendment", val: 1847, color: "#0891b2", icon: <FileText size={22}/> },
-        { label: "EC Transfer", val: 423, color: "#059669", icon: <RefreshCw size={22}/> },
-        { label: "CRZ Clearance", val: 1265, color: "#d97706", icon: <Waves size={22}/> },
-        { label: "Validity Extension", val: 892, color: "#dc2626", icon: <Hourglass size={22}/> },
+        { label: "EC Granted", val: 8426, color: "#2563eb", icon: "🏭" },
+        { label: "ToR Granted", val: 5218, color: "#7c3aed", icon: "📋" },
+        { label: "EC Amendment", val: 1847, color: "#0891b2", icon: "📝" },
+        { label: "EC Transfer", val: 423, color: "#059669", icon: "🔄" },
+        { label: "CRZ Clearance", val: 1265, color: "#d97706", icon: "🌊" },
+        { label: "Validity Extension", val: 892, color: "#dc2626", icon: "⏳" },
     ];
 
     const sectorData = [
@@ -264,10 +264,10 @@ export const FCDashboard = ({ onBack }) => {
     const [fcYear, setFCYear] = useState("2025");
 
     const stageData = [
-        { label: "Stage-I Approvals", val: 24567, color: "#16a34a", icon: <CheckCircle size={22}/>, sub: "Total area: 1,23,456 Ha" },
-        { label: "Stage-II Approvals", val: 18934, color: "#0891b2", icon: <Flag size={22}/>, sub: "Total area: 98,234 Ha" },
-        { label: "Pending (Central)", val: 1456, color: "#d97706", icon: <Hourglass size={22}/>, sub: "With FAC / REC" },
-        { label: "Rejected", val: 1289, color: "#dc2626", icon: <XCircle size={22}/>, sub: "Not recommended" },
+        { label: "Stage-I Approvals", val: 24567, color: "#16a34a", icon: "✅", sub: "Total area: 1,23,456 Ha" },
+        { label: "Stage-II Approvals", val: 18934, color: "#0891b2", icon: "🏁", sub: "Total area: 98,234 Ha" },
+        { label: "Pending Proposals", val: 3421, color: "#d97706", icon: "⏳", sub: "Under consideration" },
+        { label: "Rejected", val: 1289, color: "#dc2626", icon: "❌", sub: "Not recommended" },
     ];
 
     const authorityData = [
@@ -351,10 +351,10 @@ export const FCDashboard = ({ onBack }) => {
 // ═══════════════════════════════════════════════════════════════════════════
 export const WLCDashboard = ({ onBack }) => {
     const statCards = [
-        { label: "Total Submitted", val: 4567, color: "#2563eb", icon: <ClipboardList size={22}/> },
-        { label: "Permits Granted", val: 2890, color: "#16a34a", icon: <CheckCircle size={22}/> },
-        { label: "Pending with CWLW", val: 1234, color: "#d97706", icon: <Hourglass size={22}/> },
-        { label: "Rejected", val: 443, color: "#dc2626", icon: <XCircle size={22}/> },
+        { label: "Total Submitted", val: 4567, color: "#2563eb", icon: "📋" },
+        { label: "Permits Granted", val: 2890, color: "#16a34a", icon: "✅" },
+        { label: "Under Consideration", val: 1234, color: "#d97706", icon: "⏳" },
+        { label: "Rejected", val: 443, color: "#dc2626", icon: "❌" },
     ];
 
     const proposalTypes = [
@@ -376,12 +376,12 @@ export const WLCDashboard = ({ onBack }) => {
     ];
 
     const speciesData = [
-        { name: "Tiger", count: 3167, icon: <PawPrint size={22}/>, trend: "+4.6%" },
-        { name: "Asian Elephant", count: 29964, icon: <PawPrint size={22}/>, trend: "+2.1%" },
-        { name: "One-horned Rhino", count: 2613, icon: <PawPrint size={22}/>, trend: "+7.8%" },
-        { name: "Snow Leopard", count: 718, icon: <PawPrint size={22}/>, trend: "+3.2%" },
-        { name: "Gangetic Dolphin", count: 4014, icon: <PawPrint size={22}/>, trend: "-1.4%" },
-        { name: "Red Panda", count: 5078, icon: <PawPrint size={22}/>, trend: "+5.3%" },
+        { name: "Tiger", count: 3167, icon: "🐅", trend: "+4.6%" },
+        { name: "Asian Elephant", count: 29964, icon: "🐘", trend: "+2.1%" },
+        { name: "One-horned Rhino", count: 2613, icon: "🦏", trend: "+7.8%" },
+        { name: "Snow Leopard", count: 718, icon: "🐆", trend: "+3.2%" },
+        { name: "Gangetic Dolphin", count: 4014, icon: "🐬", trend: "-1.4%" },
+        { name: "Red Panda", count: 5078, icon: "🦊", trend: "+5.3%" },
     ];
 
     return (
@@ -429,19 +429,17 @@ export const WLCDashboard = ({ onBack }) => {
                 </div>
 
                 {/* Species Cards */}
-                <div style={{ flex: 1 }} className="card fade-in">
-                    <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #e2e8f0" }}>
-                        <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0a2463", marginBottom: 20, display: "flex", gap: 6, alignItems: "center" }}><PawPrint size={18} color="#ea580c"/> Key Species — Conservation Census Data</h3>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 14 }}>
-                            {speciesData.map((sp, i) => (
-                                <div key={i} style={{ background: "#f8fafc", borderRadius: 14, padding: "18px 14px", textAlign: "center", border: "1px solid #e2e8f0", transition: "transform 0.2s" }} onMouseEnter={e => e.currentTarget.style.transform = "scale(1.04)"} onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}>
-                                    <div style={{ fontSize: 36, marginBottom: 8 }}>{sp.icon}</div>
-                                    <div style={{ fontSize: 18, fontWeight: 800, color: "#0f172a" }}>{sp.count.toLocaleString()}</div>
-                                    <div style={{ fontSize: 12, fontWeight: 600, color: "#475569", marginBottom: 4 }}>{sp.name}</div>
-                                    <div style={{ fontSize: 11, fontWeight: 700, color: sp.trend.startsWith("+") ? "#16a34a" : "#dc2626" }}>{sp.trend}</div>
-                                </div>
-                            ))}
-                        </div>
+                <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #e2e8f0" }}>
+                    <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0a2463", marginBottom: 20 }}>🐾 Key Species — Conservation Census Data</h3>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 14 }}>
+                        {speciesData.map((sp, i) => (
+                            <div key={i} style={{ background: "#f8fafc", borderRadius: 14, padding: "18px 14px", textAlign: "center", border: "1px solid #e2e8f0", transition: "transform 0.2s" }} onMouseEnter={e => e.currentTarget.style.transform = "scale(1.04)"} onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}>
+                                <div style={{ fontSize: 36, marginBottom: 8 }}>{sp.icon}</div>
+                                <div style={{ fontSize: 18, fontWeight: 800, color: "#0f172a" }}>{sp.count.toLocaleString()}</div>
+                                <div style={{ fontSize: 12, fontWeight: 600, color: "#475569", marginBottom: 4 }}>{sp.name}</div>
+                                <div style={{ fontSize: 11, fontWeight: 700, color: sp.trend.startsWith("+") ? "#16a34a" : "#dc2626" }}>{sp.trend}</div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -457,25 +455,25 @@ export const CAMPADashboard = ({ onBack }) => {
     const [selState, setSelState] = useState("All India");
 
     const financialCards = [
-        { label: "Fund Received (₹ Cr)", val: 54867, color: "#2563eb", icon: <Coins size={22}/> },
-        { label: "Fund Released (₹ Cr)", val: 42345, color: "#16a34a", icon: <Upload size={22}/> },
-        { label: "Fund Utilized (₹ Cr)", val: 38912, color: "#7c3aed", icon: <BarChartIcon size={22}/> },
-        { label: "Forest Area Diverted (Ha)", val: 123456, color: "#0891b2", icon: <TreePine size={22}/> },
+        { label: "Fund Received (₹ Cr)", val: 54867, color: "#2563eb", icon: "💰" },
+        { label: "Fund Released (₹ Cr)", val: 42345, color: "#16a34a", icon: "📤" },
+        { label: "Fund Utilized (₹ Cr)", val: 38912, color: "#7c3aed", icon: "📊" },
+        { label: "Forest Area Diverted (Ha)", val: 123456, color: "#0891b2", icon: "🌲" },
     ];
 
     const activities = [
-        { name: "Compensatory Afforestation", icon: <Sprout size={20} color="#16a34a"/>, count: 45678, unit: "Ha", color: "#16a34a" },
-        { name: "Catchment Area Treatment", icon: <Droplets size={20} color="#0891b2"/>, count: 12345, unit: "Ha", color: "#0891b2" },
-        { name: "Wildlife Management", icon: <PawPrint size={20} color="#ea580c"/>, count: 2345, unit: "Projects", color: "#ea580c" },
-        { name: "Assisted Natural Regeneration", icon: <Leaf size={20} color="#059669"/>, count: 8967, unit: "Ha", color: "#059669" },
-        { name: "Forest Fire Prevention", icon: <Flame size={20} color="#dc2626"/>, count: 1567, unit: "Units", color: "#dc2626" },
-        { name: "Soil & Moisture Conservation", icon: <Mountain size={20} color="#7c3aed"/>, count: 6789, unit: "Ha", color: "#7c3aed" },
-        { name: "Nursery Development", icon: <Flower2 size={20} color="#db2777"/>, count: 456, unit: "Nurseries", color: "#db2777" },
-        { name: "Infrastructure Development", icon: <HardHat size={20} color="#475569"/>, count: 234, unit: "Projects", color: "#475569" },
-        { name: "Biodiversity Conservation", icon: <Bug size={20} color="#0d9488"/>, count: 890, unit: "Projects", color: "#0d9488" },
-        { name: "Livelihood Support", icon: <Users size={20} color="#b45309"/>, count: 3456, unit: "Families", color: "#b45309" },
-        { name: "Research & Monitoring", icon: <Microscope size={20} color="#6366f1"/>, count: 178, unit: "Studies", color: "#6366f1" },
-        { name: "Capacity Building", icon: <BookOpen size={20} color="#84cc16"/>, count: 567, unit: "Programs", color: "#84cc16" },
+        { name: "Compensatory Afforestation", icon: "🌱", count: 45678, unit: "Ha", color: "#16a34a" },
+        { name: "Catchment Area Treatment", icon: "💧", count: 12345, unit: "Ha", color: "#0891b2" },
+        { name: "Wildlife Management", icon: "🐯", count: 2345, unit: "Projects", color: "#ea580c" },
+        { name: "Assisted Natural Regeneration", icon: "🌿", count: 8967, unit: "Ha", color: "#059669" },
+        { name: "Forest Fire Prevention", icon: "🔥", count: 1567, unit: "Units", color: "#dc2626" },
+        { name: "Soil & Moisture Conservation", icon: "🏔️", count: 6789, unit: "Ha", color: "#7c3aed" },
+        { name: "Nursery Development", icon: "🌸", count: 456, unit: "Nurseries", color: "#db2777" },
+        { name: "Infrastructure Development", icon: "🏗️", count: 234, unit: "Projects", color: "#475569" },
+        { name: "Biodiversity Conservation", icon: "🦋", count: 890, unit: "Projects", color: "#0d9488" },
+        { name: "Livelihood Support", icon: "👥", count: 3456, unit: "Families", color: "#b45309" },
+        { name: "Research & Monitoring", icon: "🔬", count: 178, unit: "Studies", color: "#6366f1" },
+        { name: "Capacity Building", icon: "📚", count: 567, unit: "Programs", color: "#84cc16" },
     ];
 
     const stateWise = [
